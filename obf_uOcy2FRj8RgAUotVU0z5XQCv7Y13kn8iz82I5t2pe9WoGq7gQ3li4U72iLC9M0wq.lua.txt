@@ -1,0 +1,727 @@
+--==================================================
+-- 🌸 HIKARU RECHAT | COMPLETE UI
+-- Original prototype + sticker library + decorations
+-- For your own Roblox experience
+-- Place inside a LocalScript in StarterPlayerScripts
+--==================================================
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+--==================================================
+-- 💙 THEME
+--==================================================
+
+local Theme = {
+    Background = Color3.fromRGB(222, 237, 255),
+    Panel = Color3.fromRGB(239, 246, 255),
+    Blue = Color3.fromRGB(185, 211, 255),
+    BlueDark = Color3.fromRGB(111, 153, 220),
+    Pink = Color3.fromRGB(255, 220, 235),
+    Lavender = Color3.fromRGB(229, 220, 255),
+    Cream = Color3.fromRGB(255, 252, 255),
+    Text = Color3.fromRGB(43, 54, 79),
+    White = Color3.fromRGB(255, 255, 255),
+    Green = Color3.fromRGB(207, 244, 219)
+}
+
+--==================================================
+-- 🌸 STICKER LIBRARY
+--==================================================
+
+local function makeStickers(ids)
+    local result = {}
+
+    for _, id in ipairs(ids) do
+        table.insert(result, {
+            Name = "Sticker",
+            Id = "rbxassetid://" .. tostring(id)
+        })
+    end
+
+    return result
+end
+
+local StickerLibrary = {
+    HIKARU = makeStickers({
+        "140679160941823",
+        "101985537209976",
+        "81267466227470",
+        "81267466227470",
+        "131978957048351",
+        "136441912391638",
+        "112738656241923",
+        "79544069728342",
+        "74711148281694",
+        "85178465948345",
+        "100813650122616",
+    }),
+
+    FUNNY = makeStickers({
+        "128095255911482",
+        "128968470098870",
+        "77434753831619",
+        "108109129063046",
+        "115860336328066",
+        "128889657069071",
+        "133430947254711",
+        "97306963661625",
+        "124024831271366",
+        "108529198078323",
+        "79997418804330",
+        "129223738142512",
+        "138663855252915",
+        "109764995789835",
+        "85731204686496",
+        "81309633917310",
+        "115170158116605",
+        "79710446486013",
+        "103157769723800",
+        "118408761763041",
+        "91786548290990",
+        "108634647077956",
+        "87526555464330",
+        "122482062528065",
+        "88027001345090",
+        "132768188235913",
+        "99655874979415",
+        "125846640898881",
+        "85815702084336",
+        "140250441783315",
+        "108031909144399",
+        "106410276808185",
+        "119193252371655",
+        "91481262031259",
+        "97049382965950",
+        "124402806088120",
+        "93248688099449",
+        "125327917104289",
+        "76924349762854",
+        "88990988313776",
+        "113465712392850",
+        "99738786226275",
+    }),
+
+    ANIME = makeStickers({
+        "96339829005903",
+        "73278911698894",
+        "124503939073755",
+        "104979587533521",
+        "104159083837997",
+        "78855241365077",
+        "121736765396216",
+        "76106667403143",
+        "81997748342844",
+        "120819129900031",
+        "132662430971500",
+        "109362723826464",
+        "79017251036393",
+        "138801333849148",
+        "111100013070326",
+        "137567972391762",
+        "78487856999391",
+        "137767380939635",
+        "132852990358635",
+        "79228866183294",
+        "97268399838489",
+        "95425384532604",
+        "126260322353417",
+        "134166083742391",
+        "123870338233145",
+        "80916620906808",
+        "128670524620309",
+        "119748978973675",
+        "86512465908831",
+    }),
+
+    KDRAMA = makeStickers({
+        "134716252695381",
+        "138828597136205",
+        "131384734160613",
+        "97837619897044",
+        "104380131012074",
+        "121508976135609",
+        "127131306419877",
+        "111350323802423",
+        "129829360599684",
+        "127538691913576",
+        "71564330992870",
+    }),
+
+    RELATABLE = makeStickers({
+        "72238764993074",
+        "134117534272749",
+        "131425176009347",
+        "75808495150228",
+        "82459518310512",
+        "119698915588062",
+        "125349482686151",
+        "83822454618860",
+        "80274309755368",
+        "83550121865391",
+        "114387780493073",
+        "97054084632575",
+        "115641827562846",
+        "113783777417127",
+        "139700292017302",
+        "111904585824334",
+        "92862148360967",
+        "81069238082325",
+        "125480003199873",
+        "70727268182240",
+        "109395277350525",
+        "80871658961444",
+    }),
+
+    ANIMALS = makeStickers({
+        "76483774106718",
+        "81292630752682",
+        "73326437904738",
+        "104226681660236",
+        "120869854682973",
+        "109986458617506",
+        "76790831568390",
+        "124711021070035",
+        "95154721448774",
+        "115293987396714",
+        "82493782466758",
+        "85638505513037",
+        "134794442284389",
+        "79387304629845",
+        "77729822314645",
+        "96251553756433",
+        "92795529554285",
+        "82219327904832",
+        "73505271293717",
+        "91725320834842",
+        "114989386632732",
+        "108298773652265",
+        "72202222902174",
+        "128463538149620",
+        "88862906114132",
+        "113039378470847",
+        "116585035577202",
+        "78022572058202",
+        "105895269571660",
+        "123562135581779",
+    })
+}
+
+local Categories = {
+    "HIKARU",
+    "FUNNY",
+    "ANIME",
+    "KDRAMA",
+    "RELATABLE",
+    "ANIMALS"
+}
+
+local CategoryNames = {
+    HIKARU = "🌸 HIKARU",
+    FUNNY = "😂 FUNNY",
+    ANIME = "🎌 ANIME",
+    KDRAMA = "🎬 KDRAMA",
+    RELATABLE = "💗 RELATABLE",
+    ANIMALS = "🐱 ANIMALS"
+}
+
+--==================================================
+-- 🧹 CLEANUP OLD UI
+--==================================================
+
+local oldGui = playerGui:FindFirstChild("HikaruRechat")
+
+if oldGui then
+    oldGui:Destroy()
+end
+
+--==================================================
+-- 🖥️ SCREEN GUI
+--==================================================
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "HikaruRechat"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+gui.DisplayOrder = 20
+gui.Parent = playerGui
+
+--==================================================
+-- 🛠️ HELPER FUNCTIONS
+--==================================================
+
+local function makeCorner(object, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = object
+end
+
+local function makeStroke(object, color, thickness)
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = color
+    stroke.Thickness = thickness or 1
+    stroke.Transparency = 0.25
+    stroke.Parent = object
+    return stroke
+end
+
+local function makeButton(parent, text, size, position, color)
+    local button = Instance.new("TextButton")
+    button.Size = size
+    button.Position = position
+    button.BackgroundColor3 = color
+    button.TextColor3 = Theme.Text
+    button.Text = text
+    button.TextScaled = true
+    button.Font = Enum.Font.GothamBold
+    button.AutoButtonColor = true
+    button.BorderSizePixel = 0
+    button.Parent = parent
+
+    makeCorner(button, 12)
+
+    return button
+end
+
+local function makeLabel(parent, text, size, position)
+    local label = Instance.new("TextLabel")
+    label.Size = size
+    label.Position = position
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Theme.Text
+    label.TextScaled = true
+    label.Font = Enum.Font.GothamBold
+    label.Parent = parent
+    return label
+end
+
+--==================================================
+-- 🌷 WELCOME SCREEN
+--==================================================
+
+local welcome = Instance.new("Frame")
+welcome.Name = "Welcome"
+welcome.Size = UDim2.fromScale(1, 1)
+welcome.BackgroundColor3 = Theme.Background
+welcome.BorderSizePixel = 0
+welcome.ZIndex = 10
+welcome.Parent = gui
+
+makeLabel(
+    welcome,
+    "🌸  ✿  ♡  ✿  🌸",
+    UDim2.new(0.8, 0, 0, 45),
+    UDim2.new(0.1, 0, 0.25, 0)
+).ZIndex = 11
+
+local welcomeTitle = makeLabel(
+    welcome,
+    "HIKARU RECHAT",
+    UDim2.new(0.9, 0, 0, 70),
+    UDim2.new(0.05, 0, 0.36, 0)
+)
+welcomeTitle.Font = Enum.Font.GothamBlack
+welcomeTitle.ZIndex = 11
+
+local loadingText = makeLabel(
+    welcome,
+    "Loading your little world...",
+    UDim2.new(0.85, 0, 0, 40),
+    UDim2.new(0.075, 0, 0.48, 0)
+)
+loadingText.Font = Enum.Font.Gotham
+loadingText.ZIndex = 11
+
+makeLabel(
+    welcome,
+    "୨୧  ⋆｡°✩  ♡  ✩°｡⋆  ୨୧",
+    UDim2.new(0.9, 0, 0, 45),
+    UDim2.new(0.05, 0, 0.58, 0)
+).ZIndex = 11
+
+--==================================================
+-- 💗 MAIN WINDOW
+--==================================================
+
+local main = Instance.new("Frame")
+main.Name = "MainWindow"
+main.Size = UDim2.new(0.94, 0, 0.82, 0)
+main.Position = UDim2.new(0.03, 0, 0.09, 0)
+main.BackgroundColor3 = Theme.Panel
+main.BorderSizePixel = 0
+main.Visible = false
+main.Parent = gui
+
+makeCorner(main, 20)
+makeStroke(main, Theme.BlueDark, 1.5)
+
+local sizeConstraint = Instance.new("UISizeConstraint")
+sizeConstraint.MaxSize = Vector2.new(720, 680)
+sizeConstraint.Parent = main
+
+--==================================================
+-- 🌸 HEADER
+--==================================================
+
+local header = Instance.new("Frame")
+header.Name = "Header"
+header.Size = UDim2.new(1, 0, 0, 58)
+header.BackgroundColor3 = Theme.Blue
+header.BorderSizePixel = 0
+header.Parent = main
+
+makeCorner(header, 18)
+
+local title = makeLabel(
+    header,
+    "🌸 HIKARU RECHAT",
+    UDim2.new(0.57, 0, 1, 0),
+    UDim2.new(0.035, 0, 0, 0)
+)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Font = Enum.Font.GothamBlack
+
+local flowerDecor = makeLabel(
+    header,
+    "✿ ♡ ✿",
+    UDim2.new(0.19, 0, 1, 0),
+    UDim2.new(0.59, 0, 0, 0)
+)
+flowerDecor.TextColor3 = Color3.fromRGB(115, 111, 200)
+
+local minimize = makeButton(
+    header,
+    "—",
+    UDim2.fromOffset(35, 34),
+    UDim2.new(1, -79, 0, 12),
+    Theme.Green
+)
+
+local close = makeButton(
+    header,
+    "×",
+    UDim2.fromOffset(34, 34),
+    UDim2.new(1, -39, 0, 12),
+    Theme.Pink
+)
+
+--==================================================
+-- 💕 MINIMIZED RESTORE BUTTON
+--==================================================
+
+local restore = makeButton(
+    gui,
+    "♡ Hikaru Rechat",
+    UDim2.fromOffset(175, 48),
+    UDim2.new(0, 12, 0.72, 0),
+    Theme.Blue
+)
+
+restore.TextSize = 15
+restore.Visible = false
+makeStroke(restore, Theme.BlueDark, 1)
+
+--==================================================
+-- ✨ DECORATIVE FOOTER
+--==================================================
+
+local footer = makeLabel(
+    main,
+    "୨୧  🌷  ♡  ✧  🦋  ✿  ♡  🌷  ୨୧",
+    UDim2.new(1, -20, 0, 23),
+    UDim2.new(0, 10, 1, -25)
+)
+footer.TextColor3 = Theme.BlueDark
+footer.Font = Enum.Font.Gotham
+
+--==================================================
+-- 📑 NAVIGATION
+--==================================================
+
+local nav = Instance.new("ScrollingFrame")
+nav.Name = "Navigation"
+nav.Size = UDim2.new(1, -16, 0, 43)
+nav.Position = UDim2.new(0, 8, 0, 63)
+nav.BackgroundTransparency = 1
+nav.BorderSizePixel = 0
+nav.ScrollBarThickness = 2
+nav.ScrollingDirection = Enum.ScrollingDirection.X
+nav.AutomaticCanvasSize = Enum.AutomaticSize.X
+nav.CanvasSize = UDim2.new(0, 0, 0, 0)
+nav.Parent = main
+
+local navLayout = Instance.new("UIListLayout")
+navLayout.FillDirection = Enum.FillDirection.Horizontal
+navLayout.Padding = UDim.new(0, 6)
+navLayout.SortOrder = Enum.SortOrder.LayoutOrder
+navLayout.Parent = nav
+
+local content = Instance.new("Frame")
+content.Name = "Content"
+content.Size = UDim2.new(1, -20, 1, -160)
+content.Position = UDim2.new(0, 10, 0, 112)
+content.BackgroundColor3 = Theme.White
+content.BorderSizePixel = 0
+content.ClipsDescendants = true
+content.Parent = main
+
+makeCorner(content, 14)
+
+local tabs = {
+    "Home",
+    "DMs",
+    "Profile",
+    "Rank",
+    "Stickers",
+    "Settings"
+}
+
+local currentPage
+
+local function clearPage()
+    if currentPage then
+        currentPage:Destroy()
+    end
+
+    currentPage = Instance.new("Frame")
+    currentPage.Name = "CurrentPage"
+    currentPage.Size = UDim2.fromScale(1, 1)
+    currentPage.BackgroundTransparency = 1
+    currentPage.Parent = content
+end
+
+--==================================================
+-- 🎀 STICKER GALLERY
+--==================================================
+
+local function showStickers()
+    clearPage()
+
+    local categoryBar = Instance.new("ScrollingFrame")
+    categoryBar.Name = "Categories"
+    categoryBar.Size = UDim2.new(1, -12, 0, 42)
+    categoryBar.Position = UDim2.new(0, 6, 0, 5)
+    categoryBar.BackgroundTransparency = 1
+    categoryBar.BorderSizePixel = 0
+    categoryBar.ScrollBarThickness = 2
+    categoryBar.ScrollingDirection = Enum.ScrollingDirection.X
+    categoryBar.AutomaticCanvasSize = Enum.AutomaticSize.X
+    categoryBar.CanvasSize = UDim2.new(0, 0, 0, 0)
+    categoryBar.Parent = currentPage
+
+    local categoryLayout = Instance.new("UIListLayout")
+    categoryLayout.FillDirection = Enum.FillDirection.Horizontal
+    categoryLayout.Padding = UDim.new(0, 5)
+    categoryLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    categoryLayout.Parent = categoryBar
+
+    local gallery = Instance.new("ScrollingFrame")
+    gallery.Name = "StickerGallery"
+    gallery.Size = UDim2.new(1, -12, 1, -100)
+    gallery.Position = UDim2.new(0, 6, 0, 52)
+    gallery.BackgroundColor3 = Theme.Panel
+    gallery.BorderSizePixel = 0
+    gallery.ScrollBarThickness = 4
+    gallery.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    gallery.CanvasSize = UDim2.new(0, 0, 0, 0)
+    gallery.Parent = currentPage
+
+    makeCorner(gallery, 12)
+
+    local grid = Instance.new("UIGridLayout")
+    grid.CellSize = UDim2.new(0, 82, 0, 82)
+    grid.CellPadding = UDim2.new(0, 7, 0, 7)
+    grid.FillDirection = Enum.FillDirection.Horizontal
+    grid.SortOrder = Enum.SortOrder.LayoutOrder
+    grid.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    grid.Parent = gallery
+
+    local selectedInfo = makeLabel(
+        currentPage,
+        "♡ Tap a sticker to preview it ♡",
+        UDim2.new(1, -12, 0, 35),
+        UDim2.new(0, 6, 1, -42)
+    )
+    selectedInfo.Font = Enum.Font.Gotham
+    selectedInfo.TextColor3 = Theme.BlueDark
+
+    local function loadCategory(category)
+        for _, child in ipairs(gallery:GetChildren()) do
+            if child:IsA("ImageButton")
+                or child:IsA("TextLabel") then
+                child:Destroy()
+            end
+        end
+
+        gallery.CanvasPosition = Vector2.zero
+
+        local stickers = StickerLibrary[category] or {}
+
+        for index, sticker in ipairs(stickers) do
+            local imageButton = Instance.new("ImageButton")
+            imageButton.Name = "Sticker_" .. index
+            imageButton.LayoutOrder = index
+            imageButton.Size = UDim2.fromOffset(82, 82)
+            imageButton.BackgroundColor3 = Theme.Pink
+            imageButton.BorderSizePixel = 0
+            imageButton.Image = sticker.Id
+            imageButton.ScaleType = Enum.ScaleType.Fit
+            imageButton.Parent = gallery
+
+            makeCorner(imageButton, 12)
+            makeStroke(imageButton, Theme.Blue, 1)
+
+            imageButton.Activated:Connect(function()
+                selectedInfo.Text = "♡ Selected " .. category .. " sticker #" .. index .. " ♡"
+
+                TweenService:Create(
+                    imageButton,
+                    TweenInfo.new(0.12),
+                    {BackgroundColor3 = Theme.Green}
+                ):Play()
+
+                task.delay(0.35, function()
+                    if imageButton.Parent then
+                        imageButton.BackgroundColor3 = Theme.Pink
+                    end
+                end)
+            end)
+        end
+
+        if #stickers == 0 then
+            local empty = makeLabel(
+                gallery,
+                "No stickers here yet ♡",
+                UDim2.new(1, -12, 0, 55),
+                UDim2.new(0, 6, 0, 10)
+            )
+            empty.Font = Enum.Font.Gotham
+        end
+    end
+
+    for _, category in ipairs(Categories) do
+        local categoryButton = makeButton(
+            categoryBar,
+            CategoryNames[category] or category,
+            UDim2.fromOffset(112, 36),
+            UDim2.new(),
+            Theme.Pink
+        )
+
+        categoryButton.TextSize = 12
+
+        categoryButton.Activated:Connect(function()
+            loadCategory(category)
+        end)
+    end
+
+    loadCategory("HIKARU")
+end
+
+--==================================================
+-- 🏠 OTHER PAGES
+--==================================================
+
+local function showPage(tabName)
+    if tabName == "Stickers" then
+        showStickers()
+        return
+    end
+
+    clearPage()
+
+    local pageContent = {
+        Home = "Welcome to your little world! ♡\n\n🌸  ✿  🦋  ✧  💗",
+        DMs = "Direct Messages ♡\n\nChat integration needs a server setup.",
+        Profile = "Your Profile ♡\n\nStay cute, stay you! 🌷",
+        Rank = "Your Rank ✨\n\nRank system is a UI placeholder.",
+        Settings = "Settings ⚙️\n\n♡ Pastel Blue Theme ♡"
+    }
+
+    local message = makeLabel(
+        currentPage,
+        pageContent[tabName] or tabName,
+        UDim2.new(0.9, 0, 0.75, 0),
+        UDim2.new(0.05, 0, 0.12, 0)
+    )
+
+    message.TextWrapped = true
+    message.Font = Enum.Font.GothamBold
+end
+
+for _, tabName in ipairs(tabs) do
+    local tabButton = makeButton(
+        nav,
+        tabName,
+        UDim2.fromOffset(100, 36),
+        UDim2.new(),
+        Theme.Pink
+    )
+
+    tabButton.TextSize = 13
+
+    tabButton.Activated:Connect(function()
+        showPage(tabName)
+    end)
+end
+
+--==================================================
+-- ➖ MINIMIZE / RESTORE / CLOSE
+--==================================================
+
+minimize.Activated:Connect(function()
+    main.Visible = false
+    restore.Visible = true
+end)
+
+restore.Activated:Connect(function()
+    main.Visible = true
+    restore.Visible = false
+end)
+
+close.Activated:Connect(function()
+    main.Visible = false
+    restore.Visible = false
+end)
+
+--==================================================
+-- 🌷 LOADING ANIMATION
+--==================================================
+
+task.spawn(function()
+    for i = 1, 3 do
+        loadingText.Text =
+            "Loading your little world" .. string.rep(".", i)
+
+        task.wait(0.4)
+    end
+
+    local tween = TweenService:Create(
+        welcome,
+        TweenInfo.new(0.45),
+        {BackgroundTransparency = 1}
+    )
+
+    tween:Play()
+
+    for _, child in ipairs(welcome:GetDescendants()) do
+        if child:IsA("TextLabel") then
+            TweenService:Create(
+                child,
+                TweenInfo.new(0.3),
+                {TextTransparency = 1}
+            ):Play()
+        end
+    end
+
+    tween.Completed:Wait()
+
+    welcome:Destroy()
+    main.Visible = true
+
+    showPage("Home")
+end)
